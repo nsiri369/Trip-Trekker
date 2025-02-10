@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Trip Trekker Login & Signup</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: linear-gradient(to bottom right, #74ebd5, #acb6e5);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background: rgba(255, 220, 220, 0.406);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            padding: 30px;
+            text-align: center;
+        }
+        h1, h3 {
+            color:;
+        }
+        .form-container {
+            display: none;
+            width: 100%;
+        }
+        .form-container.active {
+            display: block;
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            font-size: 14px;
+            color: #333;
+            text-align: left;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        button {
+            position: ;
+    bottom: 0px;   
+    left: 10px;
+    width: 200px;
+    height: 50px;
+    background: #cccccd;
+    border-radius: 10px;
+    box-shadow: 2px 0px 12px rgba(0, 0, 0, 0.1);
+    transition: .5s ease-in-out;
+        }
+        button:hover {
+            background: #2a7cbc;
+        }
+        a {
+            color: #040404;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .switch-link {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        
+        <div class="top-header">
+            <h3>Hello, Again!</h3>
+            <small>We are happy to have you back.</small>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="form-container active">
+            <label for="loginUsername">Username</label>
+            <input type="text" id="loginUsername" name="username" placeholder="Enter your Username" required>
+
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" name="password" placeholder="Enter your Password" required>
+
+            <button type="submit">Sign In</button>
+            <div class="switch-link">
+                <p>Not registered? <a onclick="showSignup()">Create an account</a></p>
+            </div>
+        </form>
+
+        <!-- Signup Form -->
+        <form id="signupForm" class="form-container">
+            <label for="signupUsername">Username</label>
+            <input type="text" id="signupUsername" name="username" placeholder="Choose a Username" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your Email" required>
+
+            <label for="signupPassword">Password</label>
+            <input type="password" id="signupPassword" name="password" placeholder="Create a Password" required>
+
+            <button type="submit">Sign Up</button>
+            <div class="switch-link">
+                <p>Already registered? <a onclick="showLogin()">Sign In</a></p>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const formTitle = document.getElementById('formTitle');
+    
+        function showSignup() {
+            loginForm.classList.remove('active');
+            signupForm.classList.add('active');
+            formTitle.textContent = "Create a new account";
+        }
+    
+        function showLogin() {
+            signupForm.classList.remove('active');
+            loginForm.classList.add('active');
+            formTitle.textContent = "Enter your login credentials";
+        }
+    
+        async function handleLogin(event) {
+            event.preventDefault();
+    
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+    
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password }),
+                });
+    
+                if (response.ok) {
+                    window.location.href = '/preview';
+                } else {
+                    const message = await response.text();
+                    alert(message || 'Invalid credentials. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error during login:', error);
+               // alert('An error occurred. Please try again later.');
+            }
+        }
+    
+        async function handleSignup(event) {
+            event.preventDefault();
+    
+            const username = document.getElementById('signupUsername').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('signupPassword').value;
+    
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password }),
+                });
+    
+                if (response.ok) {
+                    alert('Registration successful! Please log in.');
+                    showLogin();
+                } else {
+                    const message = await response.text();
+                    alert(message || 'An error occurred during registration.');
+                }
+            } catch (error) {
+                console.error('Error during signup:', error);
+                alert('An error occurred. Please try again later.');
+            }
+        }
+    
+        document.getElementById('loginForm').addEventListener('submit', handleLogin);
+        document.getElementById('signupForm').addEventListener('submit', handleSignup);
+    </script>
+    </body></html>
+    
+       
+login1.html

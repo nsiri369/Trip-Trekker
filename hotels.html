@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Recommendations</title>
+    <style>
+        body {
+            background-image: url('images/custom-background.jpg'); /* Corrected Path */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            padding: 20px;
+            font-family: 'Poppins', sans-serif;
+            color: #a48484;
+        }
+
+        /* Overlay effect */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(87, 71, 71, 0.6);
+            z-index: -1;
+        }
+
+        /* Container Styles */
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: rgba(137, 118, 118, 0.5);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(236, 36, 36, 0.2);
+            backdrop-filter: blur(12px);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header */
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            color: #c39298;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(24, 20, 20, 0.5);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 5px;
+            color: #dba1a1;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            font-size: 14px;
+            border-radius: 10px;
+            border: 1px solid #a34f4f;
+            background: rgba(163, 170, 176, 0.8);
+            box-sizing: border-box;
+            outline: none;
+            box-shadow: 0 2px 6px #b2353533;
+            transition: box-shadow 0.3s, background-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.5);
+            background-color: rgb(203, 185, 185);
+        }
+
+        /* Button Styles */
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #3b2020;
+            color: #ac9a9a;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 12px rgba(228, 181, 181, 0.205);
+        }
+
+        button:hover {
+            background-color: #965656;
+            box-shadow: 0 6px 16px rgba(178, 191, 203, 0.7);
+            transform: translateY(-2px);
+        }
+
+        /* Hotel Details Section */
+        #touristDetails {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        #touristDetails img {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            margin-top: 10px;
+            transition: box-shadow 0.3s;
+        }
+
+        #touristDetails img:hover {
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        #touristDetails h2 {
+            color: #96a0a9;
+        }
+
+        #touristDetails p {
+            color: #966262;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Find Your Perfect Hotel</h1>
+        <form id="hotelForm">
+            <div class="form-group">
+                <label for="location">Location:</label>
+                <input type="text" id="location" name="location" placeholder="Enter your location" required>
+            </div>
+            <div class="form-group">
+                <label for="budget">Budget Range:</label>
+                <select id="budget" name="budget" required>
+                    <option value="">Select</option>
+                    <option value="low">1000-3000</option>
+                    <option value="medium">3000-6000</option>
+                    <option value="high">6000-10000</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="places">Places:</label>
+                <select id="places" name="places" required>
+                    <option value="beach">Beach</option>
+                    <option value="city">City</option>
+                    <option value="mountains">Mountains</option>
+                </select>
+            </div>
+            <button type="button" onclick="recommendHotel()">Recommend</button>
+        </form>
+        <div id="hotelDetails"></div>
+    </div>
+    <script>
+        function recommendHotel() {
+            const location = document.getElementById('location').value;
+            const budget = document.getElementById('budget').value;
+            const places = document.getElementById('places').value;
+
+            // Mock database of hotel details
+            const hotels = {
+                low: {
+                    beach: { name: "Budget Beach Hotel", image: "beach_low.jpg" },
+                    city: { name: "Budget City Hotel", image: "city_low.jpg" },
+                    mountains: { name: "Budget Mountain Hotel", image: "mountains_low.jpg" }
+                },
+                medium: {
+                    beach: { name: "Comfort Beach Hotel", image: "beach_medium.jpg" },
+                    city: { name: "Comfort City Hotel", image: "city_medium.jpg" },
+                    mountains: { name: "Comfort Mountain Hotel", image: "mountains_medium.jpg" }
+                },
+                high: {
+                    beach: { name: "Luxury Beach Hotel", image: "beach_high.jpg" },
+                    city: { name: "Luxury City Hotel", image: "city_high.jpg" },
+                    mountains: { name: "Luxury Mountain Hotel", image: "mountains_high.jpg" }
+                }
+            };
+
+            const hotel = hotels[budget]?.[places];
+
+            if (hotel) {
+                document.getElementById('hotelDetails').innerHTML = `
+                    <h2>Recommended Hotel</h2>
+                    <p>${hotel.name}</p>
+                    <img src="${hotel.image}" alt="${hotel.name}">
+                `;
+            } else {
+                document.getElementById('hotelDetails').innerHTML = <p>No hotels found for the selected criteria.</p>;
+            }
+        }
+    </script>
+</body>
+</html>

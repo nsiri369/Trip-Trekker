@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Options</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <style>
+    /* General Styles */
+    body {
+      background-image: url('images/custom-background.jpg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+      padding: 20px;
+      font-family: 'Poppins', sans-serif;
+      color: #a48484;
+      position: relative;
+    }
+
+    /* Header Styles */
+    header {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      color: rgb(58, 44, 44);
+      font-size: 2.5rem;
+      font-weight: bold;
+      font-family: 'Dancing Script', cursive;
+    }
+
+    .logout-button {
+      position: absolute;
+      top: 20px;
+      right: 100px;
+      background-color: rgb(58, 44, 44);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 15px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .logout-button:hover {
+      background-color: rgb(58, 44, 44);
+      transform: scale(1.1);
+    }
+
+    /* Main Section */
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 50px;
+      margin-top: 250px;
+      flex-wrap: wrap;
+    }
+
+    /* Option Card Styles */
+    .option-card {
+      width: 250px;
+      height: 350px;
+      background: rgba(228, 220, 220, 0.6);
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      text-align: center;
+    }
+
+    .option-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+      background: linear-gradient(to bottom right, rgba(171, 131, 128, 0.8), rgba(185, 129, 139, 0.8));
+    }
+
+    .option-card img {
+      object-fit: cover;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      transition: transform 0.3s;
+    }
+
+    .option-card:hover img {
+      transform: scale(1.1);
+    }
+
+    .option-card h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: bold;
+      color: #2d3436;
+      text-transform: uppercase;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      main {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .option-card {
+        width: 90%;
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Explore Your Destination</h1>
+  </header>
+  <button class="logout-button" onclick="logout()">Logout</button>
+  <main>
+    <div class="option-card" onclick="navigateToPage('hotels')">
+      <img 
+        src="https://thumbs.dreamstime.com/b/luxury-hotel-room-master-bedroom-creative-ai-design-background-instagram-facebook-wall-painting-photo-wallpaper-backgrounds-325040660.jpg" 
+        alt="Hotels" 
+        data-height="180px" 
+        data-width="90%">
+      <h2>Hotels</h2>
+    </div>
+    <div class="option-card" onclick="navigateToPage('restaurants')">
+      <img 
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJ0EqHI6h5QgFTXGG_1i2FADG1xulRbVtecA&s" 
+        alt="Restaurants" 
+        data-height="180px" 
+        data-width="90%">
+      <h2>Restaurants</h2>
+    </div>
+    <div class="option-card" onclick="navigateToPage('tourist-places')">
+      <img 
+        src="https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/g2-1716175948461.jpg" 
+        alt="Tourist Places" 
+        data-height="180px" 
+        data-width="80%">
+      <h2>Tourist Places</h2>
+    </div>
+  </main>
+  <script>
+    // Apply height and width based on data attributes
+    document.querySelectorAll('.option-card img').forEach(img => {
+      const height = img.getAttribute('data-height');
+      const width = img.getAttribute('data-width');
+      if (height) img.style.height = height;
+      if (width) img.style.width = width;
+    });
+  
+    // Function to handle navigation
+    function navigateToPage(page) {
+      if (page === 'hotels') {
+        window.location.href = "hotels.html";
+      } else if (page === 'restaurants') {
+        window.location.href = "rest.html";
+      } else if (page === 'tourist-places') {
+        window.location.href = "tourism.html";
+      }
+    }
+  
+    // Function to handle logout
+    function logout() {
+      // Redirect to index.html
+      window.location.href = "index.html";
+      
+      // Clear history to prevent going back to the preview page
+      history.pushState(null, null, "index.html");
+      window.onpopstate = function () {
+        history.go(1); // Forces the user to stay on the current page
+      };
+    }
+  </script>
+  
+</body>
+</html>

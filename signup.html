@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Trekker Login & Signup</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-image: url('images/custom-background.jpg');
+            background-position: center;
+            background-size: cover;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            width: 400px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        h3 {
+            color: #1c1c1c;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            display: none;
+            width: 100%;
+        }
+
+        .form-container.active {
+            display: block;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            font-size: 14px;
+            color: #333;
+            text-align: left;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        .error-container {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: rgb(58, 44, 44);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            color: #fff;
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            background: rgb(80, 60, 60);
+        }
+
+        .switch-link {
+            margin-top: 15px;
+        }
+
+        .switch-link a {
+            color: #2a7cbc;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer; /* Added for hand cursor */
+        }
+
+        .switch-link a:hover {
+            color: #444;
+        }
+
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 15px 30px;
+            z-index: 100;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        header .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        header .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        header .logo h1 {
+            font-size: 1.8em;
+            color: #fff;
+            font-family: 'Dancing Script', cursive;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="images/logoo.png" alt="TripTrekker Logo">
+            <h1>TripTrekker</h1>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <h3 id="formTitle">Welcome Back!</h3>
+        <div id="error-container"></div>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="form-container active">
+            <div id="loginError" class="error-container"></div>
+            <label for="loginUsername">Username</label>
+            <input type="text" id="loginUsername" name="username" placeholder="Enter your Username" required>
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" name="password" placeholder="Enter your Password" required>
+            <button type="submit">Sign In</button>
+            <div class="switch-link">
+                <p>Not registered? <a onclick="showSignup()">Create an account</a></p>
+            </div>
+        </form>
+
+        <!-- Signup Form -->
+        <form id="signupForm" class="form-container">
+            <div id="signupError" class="error-container"></div>
+            <label for="signupUsername">Username</label>
+            <input type="text" id="signupUsername" name="username" placeholder="Choose a Username" required>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your Email" required>
+            <label for="signupPassword">Password</label>
+            <input type="password" id="signupPassword" name="password" placeholder="Create a Password" required>
+            <button type="submit">Sign Up</button>
+            <div class="switch-link">
+                <p>Already registered? <a onclick="showLogin()">Sign In</a></p>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const loginError = document.getElementById('loginError');
+        const signupError = document.getElementById('signupError');
+
+        function showSignup() {
+            loginForm.classList.remove('active');
+            signupForm.classList.add('active');
+            loginError.textContent = '';
+            signupError.textContent = '';
+        }
+
+        function showLogin() {
+            signupForm.classList.remove('active');
+            loginForm.classList.add('active');
+            loginError.textContent = '';
+            signupError.textContent = '';
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            loginError.textContent = '';
+
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    window.location.href = '/preview';
+                } else {
+                    loginError.textContent = result.error || 'Invalid username or password.';
+                }
+            } catch (error) {
+                loginError.textContent = 'An error occurred. Please try again later.';
+            }
+        }
+
+        async function handleSignup(event) {
+            event.preventDefault();
+            signupError.textContent = '';
+
+            const username = document.getElementById('signupUsername').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('signupPassword').value;
+
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert('Registration successful! Please log in.');
+                    showLogin();
+                } else {
+                    signupError.textContent = result.error || 'Registration failed.';
+                }
+            } catch (error) {
+                signupError.textContent = 'An error occurred. Please try again later.';
+            }
+        }
+
+        loginForm.addEventListener('submit', handleLogin);
+        signupForm.addEventListener('submit', handleSignup);
+    </script>
+</body>
+</html>
